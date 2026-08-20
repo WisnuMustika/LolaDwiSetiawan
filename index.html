@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database Pribadi Lola Dwi Setiawan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink-900:#05060d;
+    --ink-800:#0a0e1a;
+    --ink-700:#111528;
+    --ink-600:#171c33;
+    --violet:#6366f1;
+    --cyan:#22d3ee;
+    --line: rgba(148,163,184,.14);
+  }
+  *{-webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--ink-900);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:#000;
+  }
+  .grad-text{
+    background:linear-gradient(90deg,var(--violet),var(--cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .grad-btn{
+    background:linear-gradient(90deg,var(--violet),var(--cyan));
+    box-shadow:0 10px 30px -8px rgba(99,102,241,.55);
+  }
+  .grad-btn:active{ transform:scale(.98); }
+
+  /* landing background: drawer / archive cabinet motif, built with CSS (no external photo) */
+  .archive-bg{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(99,102,241,.16), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(34,211,238,.10), transparent 60%),
+      linear-gradient(180deg, var(--ink-800), var(--ink-900) 55%, #000 100%);
+  }
+  .archive-bg::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 84px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 2px, transparent 2px 140px);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.15) 45%, transparent 65%);
+            mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.15) 45%, transparent 65%);
+    opacity:.6;
+  }
+  .archive-bg::after{
+    content:"";
+    position:absolute; left:0; right:0; top:0; height:280px;
+    background-image: radial-gradient(circle at 25% 30%, rgba(255,255,255,.05) 0 3px, transparent 4px),
+                       radial-gradient(circle at 75% 30%, rgba(255,255,255,.05) 0 3px, transparent 4px);
+    background-size: 50% 84px;
+    opacity:.7;
+  }
+  .card-glass{
+    background:rgba(10,14,26,.72);
+    border:1px solid var(--line);
+    backdrop-filter: blur(6px);
+  }
+  .db-icon{
+    filter: drop-shadow(0 6px 18px rgba(99,102,241,.45));
+  }
+  .tab-btn{ transition: all .18s ease; }
+  .tab-btn.active{
+    background:linear-gradient(90deg,var(--violet),var(--cyan));
+    color:#fff;
+  }
+  .fade-in{ animation: fadeIn .35s ease both; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  ::-webkit-scrollbar{ width:6px; height:6px; }
+  ::-webkit-scrollbar-thumb{ background:#2b3252; border-radius:6px; }
+  input,select,textarea{ color:#000000; font-weight:600; }
+  input::placeholder, textarea::placeholder{ color:#1e293b; font-weight:400; opacity:0.65; }
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    opacity:0; pointer-events:none; transition:.25s ease;
+    background:#0f172a; border:1px solid var(--line); z-index:60;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ================= LANDING PAGE ================= -->
+<section id="page-landing" class="archive-bg flex items-center justify-center px-5 py-10">
+  <div class="relative z-10 w-full max-w-md">
+    <div class="card-glass rounded-3xl px-7 py-10 text-center shadow-2xl">
+      <div class="flex justify-center mb-6">
+        <svg class="db-icon" width="64" height="64" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <linearGradient id="dbg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="12" cy="5" rx="8" ry="3" fill="url(#dbg)"/>
+          <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" stroke="url(#dbg)" stroke-width="1.6" fill="none"/>
+          <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" stroke="url(#dbg)" stroke-width="1.6" fill="none"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-extrabold leading-tight grad-text mb-3">
+        SELAMAT DATANG<br>DI SISTEM<br>INTERNAL
+      </h1>
+      <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+        Database Pribadi Lola Dwi Setiawan | Di Buat : 20 Agustus 2026
+      </p>
+      <button onclick="goDashboard()"
+        class="grad-btn w-full rounded-xl py-3.5 font-semibold text-white flex items-center justify-center gap-2 text-[15px]">
+        Mulai Akses
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DASHBOARD PAGE ================= -->
+<section id="page-dashboard" class="hidden min-h-screen" style="background:var(--ink-900)">
+
+  <!-- Top header (mirrors landing palette) -->
+  <header class="px-5 pt-6 pb-5" style="background:linear-gradient(180deg, var(--ink-800), var(--ink-900))">
+    <div class="flex items-center gap-3">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+        <ellipse cx="12" cy="5" rx="8" ry="3" fill="url(#dbg)"/>
+        <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" stroke="url(#dbg)" stroke-width="1.6" fill="none"/>
+        <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" stroke="url(#dbg)" stroke-width="1.6" fill="none"/>
+      </svg>
+      <div>
+        <div class="font-bold text-white text-[15px] leading-tight">Database Pribadi Lola Dwi Setiawan</div>
+        <div class="text-[11px] text-slate-400">Sistem Tanggung Renteng</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3 Menu tabs -->
+  <nav class="px-4 -mt-1 mb-4">
+    <div class="grid grid-cols-3 gap-2 card-glass rounded-2xl p-1.5">
+      <button id="tab-dashboard" onclick="switchTab('dashboard')" class="tab-btn active rounded-xl py-2.5 text-[12px] font-semibold text-slate-300">Dashboard</button>
+      <button id="tab-input" onclick="switchTab('input')" class="tab-btn rounded-xl py-2.5 text-[12px] font-semibold text-slate-300">Input Data</button>
+      <button id="tab-rekap" onclick="switchTab('rekap')" class="tab-btn rounded-xl py-2.5 text-[12px] font-semibold text-slate-300">Rekapan</button>
+    </div>
+  </nav>
+
+  <main class="px-4 pb-16">
+
+    <!-- ===== TAB: DASHBOARD ===== -->
+    <div id="content-dashboard" class="fade-in">
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="card-glass rounded-2xl p-4">
+          <div class="text-[11px] text-slate-400 mb-1">Total Catatan Tanggung Renteng</div>
+          <div id="stat-total" class="text-2xl font-extrabold grad-text">0</div>
+        </div>
+        <div class="card-glass rounded-2xl p-4">
+          <div class="text-[11px] text-slate-400 mb-1">Bulan Ini</div>
+          <div id="stat-bulan" class="text-2xl font-extrabold grad-text">0</div>
+        </div>
+        <div class="card-glass rounded-2xl p-4 col-span-2">
+          <div class="text-[11px] text-slate-400 mb-1">Total Nominal Tanggung Renteng</div>
+          <div id="stat-nominal" class="text-xl font-extrabold grad-text">Rp 0</div>
+        </div>
+        <div class="card-glass rounded-2xl p-4 col-span-2">
+          <div class="text-[11px] text-slate-400 mb-2">Center dengan Tanggung Renteng Terbanyak</div>
+          <div id="stat-center" class="text-sm font-semibold text-slate-200">Belum ada data</div>
+        </div>
+      </div>
+      <div class="card-glass rounded-2xl p-4">
+        <div class="text-[12px] font-semibold text-slate-300 mb-3">Aktivitas Terbaru</div>
+        <div id="recent-list" class="space-y-2 text-[12px] text-slate-400">Belum ada data.</div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: INPUT DATA TANGGUNG RENTENG ===== -->
+    <div id="content-input" class="hidden fade-in">
+      <div class="card-glass rounded-2xl p-5">
+        <h2 class="text-sm font-bold text-slate-200 mb-4">Input Data Tanggung Renteng</h2>
+        <form id="form-tr" class="space-y-3" onsubmit="return simpanData(event)">
+
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Tanggal Tanggung Renteng</label>
+            <input required type="date" id="f-tanggal" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Cabang</label>
+            <input required type="text" id="f-staf" placeholder="Masukan Nama Cabang" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Kode Center</label>
+            <input required type="text" id="f-center" placeholder="Contoh: 001" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+           <div>
+   <label class="text-[11px] text-slate-400 block mb-1">Nomor Id Anggota Bersangkutan</label>
+   <input required type="text" id="f-id-anggota" placeholder="Contoh: 1000" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+ </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Nama Anggota Bersangkutan</label>
+            <input required type="text" id="f-anggota" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Jumlah Tanggung Renteng(Rp)</label>
+            <input required type="number" min="0" id="f-nominal" placeholder="0" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Nama Anggota Yang Di Pakai Tanggung Renteng</label>
+            <textarea required id="f-penanggung" rows="2" placeholder="Pisahkan dengan koma jika lebih dari satu" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100"></textarea>
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Alasan Tanggung Renteng</label>
+            <input required type="text" id="f-alasan" placeholder="Tulis alasan tanggung renteng" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Bukti Pendukung (Foto / Video / Audio)</label>
+            <p class="text-[10px] text-slate-500 mb-2">Lampirkan foto, video, atau rekam voice note langsung. Ukuran total disarankan tidak terlalu besar karena tersimpan di perangkat.</p>
+
+            <div class="flex gap-2 mb-2">
+              <label class="flex-1 cursor-pointer text-center rounded-lg py-2.5 text-[12px] font-medium border border-slate-700 bg-slate-800 text-slate-200">
+                📎 Pilih File
+                <input type="file" id="f-bukti" accept="image/*,video/*,audio/*" multiple capture="environment" class="hidden" onchange="handleFileSelect(event)">
+              </label>
+              <button type="button" id="btn-record" onclick="toggleRecording()"
+                class="flex-1 rounded-lg py-2.5 text-[12px] font-medium border border-slate-700 bg-slate-800 text-slate-200">
+                🎙️ Rekam Voice Note
+              </button>
+            </div>
+            <div id="record-status" class="hidden text-[11px] text-red-400 mb-2">● Merekam... <span id="record-timer">0</span>d</div>
+
+            <div id="attachment-list" class="space-y-2"></div>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Keterangan Tambahan</label>
+            <textarea id="f-ket" rows="2" class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100"></textarea>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Tanda Tangan Manager/PIC</label>
+            <p class="text-[10px] text-slate-500 mb-2">Tanda tangan langsung di layar menggunakan jari / stylus.</p>
+            <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-100">
+              <canvas id="sign-pad" class="w-full touch-none" style="height:160px; display:block;"></canvas>
+            </div>
+            <div class="flex justify-end mt-2">
+              <button type="button" onclick="clearSignature()" class="text-[11px] text-red-400 font-medium px-2 py-1">Hapus Tanda Tangan</button>
+            </div>
+          </div>
+
+          <button type="submit" class="grad-btn w-full rounded-xl py-3 font-semibold text-white text-[14px] mt-2">
+            Simpan Data
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== TAB: REKAPAN ===== -->
+    <div id="content-rekap" class="hidden fade-in">
+      <div class="card-glass rounded-2xl p-4 mb-3">
+        <input type="text" id="search-rekap" oninput="renderRekap()" placeholder="Cari nama anggota / center..."
+          class="w-full rounded-lg px-3 py-2.5 text-[13px] border border-slate-700 bg-slate-100">
+      </div>
+      <div id="rekap-list" class="space-y-3"></div>
+    </div>
+
+  </main>
+</section>
+
+<div id="toast" class="toast rounded-xl px-4 py-3 text-[13px] text-slate-100"></div>
+
+<script>
+  const STORAGE_KEY = 'tr_ciledug_data'; // sudah tidak dipakai, data kini langsung ke server
+  // Isi link Web App hasil deploy Code_TanggungRenteng.gs di sini:
+  const URL_GAS = 'https://script.google.com/macros/s/AKfycbzYpHPjqAD876a4x7JIST5R45odijyXbXkB5lKthmSsu_RiyTZ_ELYStjQH9vIWAR-7fA/exec';
+
+  function cekUrlGas(){
+    if(!URL_GAS){
+      showToast('URL_GAS belum diisi. Hubungi admin untuk memasang link Web App.');
+      return false;
+    }
+    return true;
+  }
+
+  async function ambilDataServer(){
+    if(!cekUrlGas()) return [];
+    try{
+      const res = await fetch(URL_GAS + '?action=ambilTanggungRenteng');
+      const json = await res.json();
+      return (json && json.success) ? json.data : [];
+    }catch(err){
+      console.error(err);
+      showToast('Gagal memuat data dari server');
+      return [];
+    }
+  }
+
+  function goDashboard(){
+    document.getElementById('page-landing').classList.add('hidden');
+    document.getElementById('page-dashboard').classList.remove('hidden');
+    switchTab('dashboard');
+  }
+
+  function switchTab(tab){
+    ['dashboard','input','rekap'].forEach(t=>{
+      document.getElementById('content-'+t).classList.toggle('hidden', t!==tab);
+      document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    });
+    if(tab==='dashboard') renderDashboard();
+    if(tab==='rekap') renderRekap();
+    if(tab==='input') setTimeout(initSignaturePad, 0);
+  }
+
+  function fmtRupiah(n){
+    return 'Rp ' + Number(n||0).toLocaleString('id-ID');
+  }
+
+  // ===== Lampiran (foto / video / audio / voice note) =====
+  let attachments = [];
+  let mediaRecorder = null;
+  let recordedChunks = [];
+  let recordTimerInterval = null;
+  let recordSeconds = 0;
+
+  function fileToDataUrl(file){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function attachmentKind(type){
+    if(type.startsWith('image/')) return 'image';
+    if(type.startsWith('video/')) return 'video';
+    if(type.startsWith('audio/')) return 'audio';
+    return 'file';
+  }
+
+  async function handleFileSelect(e){
+    const files = Array.from(e.target.files || []);
+    for(const file of files){
+      try{
+        const dataUrl = await fileToDataUrl(file);
+        attachments.push({
+          name: file.name,
+          type: file.type || 'application/octet-stream',
+          kind: attachmentKind(file.type || ''),
+          dataUrl
+        });
+      }catch(err){ console.error(err); }
+    }
+    e.target.value = '';
+    renderAttachmentList();
+  }
+
+  function removeAttachment(idx){
+    attachments.splice(idx,1);
+    renderAttachmentList();
+  }
+
+  function renderAttachmentList(){
+    const el = document.getElementById('attachment-list');
+    if(attachments.length===0){ el.innerHTML=''; return; }
+    el.innerHTML = attachments.map((a,idx)=>{
+      let preview = '';
+      if(a.kind==='image') preview = `<img src="${a.dataUrl}" class="w-10 h-10 rounded-lg object-cover">`;
+      else if(a.kind==='video') preview = `<div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-[10px]">🎬</div>`;
+      else if(a.kind==='audio') preview = `<div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-[10px]">🎙️</div>`;
+      else preview = `<div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-[10px]">📄</div>`;
+      return `
+        <div class="flex items-center gap-2 border border-slate-700 rounded-lg p-2 bg-slate-900">
+          ${preview}
+          <span class="flex-1 text-[11px] text-slate-300 truncate">${a.name}</span>
+          <button type="button" onclick="removeAttachment(${idx})" class="text-red-400 text-[11px] font-medium px-1">Hapus</button>
+        </div>`;
+    }).join('');
+  }
+
+  async function toggleRecording(){
+    const btn = document.getElementById('btn-record');
+    const statusEl = document.getElementById('record-status');
+    const timerEl = document.getElementById('record-timer');
+
+    if(mediaRecorder && mediaRecorder.state === 'recording'){
+      mediaRecorder.stop();
+      return;
+    }
+
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = (e) => { if(e.data.size>0) recordedChunks.push(e.data); };
+      mediaRecorder.onstop = async () => {
+        clearInterval(recordTimerInterval);
+        statusEl.classList.add('hidden');
+        btn.textContent = '🎙️ Rekam Voice Note';
+        stream.getTracks().forEach(t=>t.stop());
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const dataUrl = await new Promise((resolve)=>{
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+        attachments.push({
+          name: `voice-note-${Date.now()}.webm`,
+          type: 'audio/webm',
+          kind: 'audio',
+          dataUrl
+        });
+        renderAttachmentList();
+      };
+      mediaRecorder.start();
+      recordSeconds = 0;
+      timerEl.textContent = recordSeconds;
+      statusEl.classList.remove('hidden');
+      btn.textContent = '⏹️ Stop Rekam';
+      recordTimerInterval = setInterval(()=>{
+        recordSeconds++;
+        timerEl.textContent = recordSeconds;
+      }, 1000);
+    }catch(err){
+      showToast('Tidak bisa mengakses mikrofon');
+      console.error(err);
+    }
+  }
+
+  // ===== Tanda tangan =====
+  let signCanvas = null, signCtx = null, signDrawing = false, signHasContent = false;
+
+  function initSignaturePad(){
+    signCanvas = document.getElementById('sign-pad');
+    if(!signCanvas) return;
+    const rect = signCanvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    signCanvas.width = rect.width * ratio;
+    signCanvas.height = rect.height * ratio;
+    signCtx = signCanvas.getContext('2d');
+    signCtx.scale(ratio, ratio);
+    signCtx.lineWidth = 2.2;
+    signCtx.lineCap = 'round';
+    signCtx.strokeStyle = '#0f172a';
+    signHasContent = false;
+
+    if(signCanvas.dataset.bound) return;
+    signCanvas.dataset.bound = '1';
+
+    const pos = (e) => {
+      const r = signCanvas.getBoundingClientRect();
+      const p = e.touches ? e.touches[0] : e;
+      return { x: p.clientX - r.left, y: p.clientY - r.top };
+    };
+    const start = (e) => { e.preventDefault(); signDrawing = true; const p = pos(e); signCtx.beginPath(); signCtx.moveTo(p.x,p.y); };
+    const move = (e) => {
+      if(!signDrawing) return;
+      e.preventDefault();
+      const p = pos(e);
+      signCtx.lineTo(p.x,p.y);
+      signCtx.stroke();
+      signHasContent = true;
+    };
+    const end = () => { signDrawing = false; };
+
+    signCanvas.addEventListener('mousedown', start);
+    signCanvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+    signCanvas.addEventListener('touchstart', start, { passive:false });
+    signCanvas.addEventListener('touchmove', move, { passive:false });
+    signCanvas.addEventListener('touchend', end);
+  }
+
+  function clearSignature(){
+    if(!signCtx || !signCanvas) return;
+    signCtx.clearRect(0,0,signCanvas.width,signCanvas.height);
+    signHasContent = false;
+  }
+
+  function getSignatureDataUrl(){
+    if(!signCanvas || !signHasContent) return '';
+    return signCanvas.toDataURL('image/png');
+  }
+
+  async function simpanData(e){
+    e.preventDefault();
+    if(!cekUrlGas()) return false;
+
+    const submitBtn = document.querySelector('#form-tr button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Menyimpan...';
+
+    const item = {
+      tanggal: document.getElementById('f-tanggal').value,
+      staf: document.getElementById('f-staf').value.trim(),
+      center: document.getElementById('f-center').value.trim(),
+      idAnggota: document.getElementById('f-id-anggota').value.trim(),
+      anggota: document.getElementById('f-anggota').value.trim(),
+      nominal: Number(document.getElementById('f-nominal').value || 0),
+      penanggung: document.getElementById('f-penanggung').value.trim(),
+      alasan: document.getElementById('f-alasan').value,
+      keterangan: document.getElementById('f-ket').value.trim(),
+      signature: getSignatureDataUrl(),
+      attachments: attachments.slice(),
+      createdAt: new Date().toISOString()
+    };
+
+    try{
+      const res = await fetch(URL_GAS, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // hindari preflight CORS di Apps Script
+        body: JSON.stringify({ action: 'simpanTanggungRenteng', data: item })
+      });
+      const json = await res.json();
+      if(json && json.success){
+        document.getElementById('form-tr').reset();
+        attachments = [];
+        renderAttachmentList();
+        clearSignature();
+        showToast('Data berhasil disimpan ke server');
+        switchTab('rekap');
+      } else {
+        showToast('Gagal menyimpan: ' + (json && json.message ? json.message : 'error tidak diketahui'));
+      }
+    }catch(err){
+      console.error(err);
+      showToast('Gagal terhubung ke server. Cek koneksi internet.');
+    }finally{
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+    return false;
+  }
+
+  async function hapusData(id){
+    if(!confirm('Hapus data ini?')) return;
+    if(!cekUrlGas()) return;
+    try{
+      const res = await fetch(URL_GAS, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'hapusTanggungRenteng', id: id })
+      });
+      const json = await res.json();
+      if(json && json.success){
+        showToast('Data dihapus');
+        renderRekap();
+        renderDashboard();
+      } else {
+        showToast('Gagal menghapus: ' + (json && json.message ? json.message : ''));
+      }
+    }catch(err){
+      console.error(err);
+      showToast('Gagal terhubung ke server. Cek koneksi internet.');
+    }
+  }
+
+  async function renderDashboard(){
+    const el = document.getElementById('recent-list');
+    el.innerHTML = 'Memuat data...';
+    const data = await ambilDataServer();
+
+    document.getElementById('stat-total').textContent = data.length;
+
+    const now = new Date();
+    const bulanIni = data.filter(d=>{
+      const t = new Date(d.tanggal);
+      return t.getMonth()===now.getMonth() && t.getFullYear()===now.getFullYear();
+    }).length;
+    document.getElementById('stat-bulan').textContent = bulanIni;
+
+    const totalNominal = data.reduce((a,b)=>a+(Number(b.nominal)||0),0);
+    document.getElementById('stat-nominal').textContent = fmtRupiah(totalNominal);
+
+    const centerCount = {};
+    data.forEach(d=>{ if(d.center) centerCount[d.center] = (centerCount[d.center]||0)+1; });
+    const topCenter = Object.entries(centerCount).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById('stat-center').textContent = topCenter ? `${topCenter[0]} (${topCenter[1]} Tanggung Renteng)` : 'Belum ada data';
+
+    if(data.length===0){
+      el.innerHTML = 'Belum ada data.';
+    } else {
+      el.innerHTML = data.slice(0,5).map(d=>`
+        <div class="flex justify-between border-b border-slate-800 pb-2">
+          <span class="text-slate-200">${d.anggota || '-'}</span>
+          <span class="text-slate-500">${d.tanggal || '-'}</span>
+        </div>`).join('');
+    }
+  }
+
+  async function renderRekap(){
+    const el = document.getElementById('rekap-list');
+    el.innerHTML = '<div class="card-glass rounded-2xl p-6 text-center text-slate-500 text-sm">Memuat data...</div>';
+
+    const all = await ambilDataServer();
+    const q = (document.getElementById('search-rekap')?.value || '').toLowerCase();
+    const data = all.filter(d =>
+      (d.anggota||'').toLowerCase().includes(q) || (d.center||'').toLowerCase().includes(q)
+    );
+
+    if(data.length===0){
+      el.innerHTML = '<div class="card-glass rounded-2xl p-6 text-center text-slate-500 text-sm">Belum ada data tanggung renteng.</div>';
+      return;
+    }
+    el.innerHTML = data.map(d => `
+      <div class="card-glass rounded-2xl p-4">
+        <div class="flex justify-between items-start mb-2">
+          <div>
+            <div class="font-semibold text-slate-100 text-sm">${d.anggota || '-'}</div>
+            <div class="text-[11px] text-slate-500">${d.center || '-'} &middot; ${d.tanggal || '-'}</div>
+          </div>
+          <button onclick="hapusData(${d.id})" class="text-red-400 text-[11px] font-medium">Hapus</button>
+        </div>
+        <div class="grid grid-cols-2 gap-y-1 text-[12px] text-slate-400 mt-2">
+          <div>ID Anggota</div><div class="text-slate-200 text-right">${d.idAnggota || '-'}</div>
+          <div>Jumlah Tanggungan</div><div class="text-slate-200 text-right">${fmtRupiah(d.nominal)}</div>
+          <div>Penanggung</div><div class="text-slate-200 text-right">${d.penanggung || '-'}</div>
+          <div>Alasan</div><div class="text-slate-200 text-right">${d.alasan || '-'}</div>
+          <div>Cabang</div><div class="text-slate-200 text-right">${d.staf || '-'}</div>
+        </div>
+        ${d.keterangan ? `<div class="text-[11px] text-slate-500 mt-2 border-t border-slate-800 pt-2">${d.keterangan}</div>` : ''}
+        ${renderAttachmentsView(d.attachments)}
+        ${d.signature ? `<div class="mt-3 border-t border-slate-800 pt-2">
+          <div class="text-[11px] text-slate-500 mb-2">Tanda Tangan</div>
+          <img src="${d.signature}" class="w-40 bg-slate-100 rounded-lg border border-slate-700">
+        </div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function renderAttachmentsView(atts){
+    if(!atts || atts.length===0) return '';
+    const items = atts.map(a=>{
+      if(a.kind==='image'){
+        return `<img src="${a.dataUrl}" class="w-16 h-16 rounded-lg object-cover border border-slate-700">`;
+      }
+      if(a.kind==='video'){
+        return `<video src="${a.dataUrl}" controls class="w-full max-w-[220px] rounded-lg border border-slate-700"></video>`;
+      }
+      if(a.kind==='audio'){
+        return `<audio src="${a.dataUrl}" controls class="w-full"></audio>`;
+      }
+      return `<a href="${a.dataUrl}" download="${a.name}" class="text-[11px] text-cyan-400 underline">${a.name}</a>`;
+    }).join('<div class="w-full"></div>');
+    return `<div class="mt-3 border-t border-slate-800 pt-2">
+      <div class="text-[11px] text-slate-500 mb-2">Bukti Pendukung</div>
+      <div class="flex flex-wrap gap-2 items-start">${items}</div>
+    </div>`;
+  }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>
